@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAGC Pledge System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1565c0;
+            --secondary-blue: #1e88e5;
+            --light-blue: #bbdefb;
+            --ultra-light-blue: #e3f2fd;
+            --dark-blue: #0d47a1;
+            --accent-blue: #2196f3;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .card {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 24px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(21, 101, 192, 0.2);
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dashboard-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            border-left: 5px solid var(--primary-blue);
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: var(--ultra-light-blue);
+        }
+        
+        .btn-blue-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .btn-blue-primary:hover {
+            background-color: var(--dark-blue);
+            color: white;
+        }
+        
+        .card-header-blue {
+            background-color: var(--primary-blue);
+            color: white;
+            border-bottom: none;
+            padding: 15px 20px;
+        }
+        
+        .input-group-text {
+            background-color: var(--primary-blue);
+            color: white;
+            border: 1px solid var(--primary-blue);
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 0.25rem rgba(21, 101, 192, 0.25);
+        }
+        
+        .badge-blue {
+            background-color: var(--light-blue);
+            color: var(--dark-blue);
+        }
+        
+        .table-blue {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .table-blue thead th {
+            background-color: var(--ultra-light-blue);
+            color: var(--dark-blue);
+            font-weight: 600;
+            border-bottom: 2px solid var(--primary-blue);
+        }
+        
+        .btn-group-blue .btn {
+            border-radius: 6px;
+            margin: 0 3px;
+        }
+        
+        .pledge-amount {
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+        
+        #emptyMessage {
+            padding: 30px;
+            color: #6c757d;
+            background-color: var(--ultra-light-blue);
+            border-radius: 8px;
+        }
+        
+        .blue-divider {
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-blue), var(--light-blue));
+            margin: 10px 0 20px 0;
+            border-radius: 3px;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            border-bottom-width: 3px;
+        }
+        
+        .nav-tabs .nav-link {
+            color: #6c757d;
+        }
+        
+        .form-floating label {
+            color: #6c757d;
+        }
+        
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.logo {
+    width: 100px;
+    height: auto; 
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); 
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .logo {
+        width: 90px; 
+    }
+}
+
+
+.header-section {
+    padding: 40px 0;
+}
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center text-md-start mb-3 mb-md-0">
+                    <div class="logo-container">
+                        <a href="homepage.html" class="cta-btn">
+                        <img src="images/church-logo.png" alt="Church Logo" class="logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h1 class="text-center fw-bold mb-0">BAGC Pledge System</h1>
+                    <p class="text-center text-white-50 mb-0">Track and manage congregation's pledges</p>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-4">
+
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="card dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-people-fill dashboard-card-icon"></i>
+                        <h5 class="card-title text-secondary">Total Pledges</h5>
+                        <div class="blue-divider"></div>
+                        <h2 id="totalPledges" class="display-4 fw-bold text-primary">0</h2>
+                        <p class="text-muted">Number of registered pledges</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-cash-stack dashboard-card-icon"></i>
+                        <h5 class="card-title text-secondary">Total Amount</h5>
+                        <div class="blue-divider"></div>
+                        <h2 id="totalAmount" class="display-4 fw-bold" style="color: var(--primary-blue);">₱0.00</h2>
+                        <p class="text-muted">Total pledged contributions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header card-header-blue">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Add New Pledge</h5>
+                    <span class="badge rounded-pill badge-blue px-3 py-2">New Entry</span>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form id="pledgeForm" class="row g-3">
+                    <div class="col-md-5">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="pledgeName" placeholder="Enter name">
+                            <label for="pledgeName"><i class="bi bi-person me-1"></i>Full Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="pledgeAmount" min="0.01" step="0.01" placeholder="Enter amount">
+                            <label for="pledgeAmount"><i class="bi bi-currency-peso me-1"></i>Pledge Amount</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-stretch">
+                        <button type="button" class="btn btn-blue-primary w-100 d-flex align-items-center justify-content-center" onclick="addPledge()">
+                            <i class="bi bi-plus-lg me-2"></i> Add Pledge
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header card-header-blue">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-table me-2"></i>Pledge Records</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-light" id="refreshBtn" title="Refresh">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table id="pledgeTable" class="table table-hover table-blue align-middle">
+                        <thead>
+                            <tr>
+                                <th><i class="bi bi-person-fill me-1"></i>Name</th>
+                                <th><i class="bi bi-currency-peso me-1"></i>Amount</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div id="emptyMessage" class="text-center">
+                    <i class="bi bi-info-circle me-2" style="font-size: 2rem;"></i>
+                    <h5 class="mt-3">No Pledges Yet</h5>
+                    <p>Add your first pledge using the form above.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container"></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let pledgeList = JSON.parse(localStorage.getItem('pledges')) || [];
+    
+        // Function to check if the table is empty and display a message
+        function checkTableEmpty() {
+            const emptyMessage = document.getElementById('emptyMessage');
+            const tableBody = document.getElementById('pledgeTable').getElementsByTagName('tbody')[0];
+    
+            if (pledgeList.length === 0) {
+                emptyMessage.style.display = 'block';
+                tableBody.style.display = 'none';
+            } else {
+                emptyMessage.style.display = 'none';
+                tableBody.style.display = 'table-row-group';
+            }
+        }
+    
+        // Function to display toast messages
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+    
+            const toastElement = document.createElement('div');
+            toastElement.className = `toast align-items-center text-white bg-${type} border-0`;
+            toastElement.setAttribute('role', 'alert');
+            toastElement.setAttribute('aria-live', 'assertive');
+            toastElement.setAttribute('aria-atomic', 'true');
+    
+            const toastBody = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi ${type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle'} me-2"></i>
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+    
+            toastElement.innerHTML = toastBody;
+            toastContainer.appendChild(toastElement);
+    
+            const toast = new bootstrap.Toast(toastElement, {
+                autohide: true,
+                delay: 3000
+            });
+    
+            toast.show();
+    
+            toastElement.addEventListener('hidden.bs.toast', function() {
+                toastElement.remove();
+            });
+        }
+    
+        // Function to add a new pledge
+        function addPledge() {
+            const name = document.getElementById('pledgeName').value.trim();
+            const amount = document.getElementById('pledgeAmount').value;
+    
+            if (!name) {
+                showToast('Please enter a valid name', 'danger');
+                document.getElementById('pledgeName').focus();
+                return;
+            }
+    
+            if (!amount || isNaN(amount) || amount <= 0) {
+                showToast('Please enter a valid amount', 'danger');
+                document.getElementById('pledgeAmount').focus();
+                return;
+            }
+    
+            const pledge = {
+                id: Date.now(),
+                name: name,
+                amount: parseFloat(amount),
+                date: new Date().toLocaleDateString()
+            };
+    
+            pledgeList.push(pledge);
+            updateTable();
+            updateDashboard();
+            saveToLocalStorage();
+    
+            document.getElementById('pledgeName').value = '';
+            document.getElementById('pledgeAmount').value = '';
+            document.getElementById('pledgeName').focus();
+    
+            showToast(`Pledge added successfully for ${name}`);
+        }
+    
+        // Function to update the table with pledges
+        function updateTable() {
+            const tableBody = document.getElementById('pledgeTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+    
+            pledgeList.forEach(pledge => {
+                const row = document.createElement('tr');
+    
+                const nameCell = document.createElement('td');
+                nameCell.innerHTML = `<strong>${pledge.name}</strong>`;
+                row.appendChild(nameCell);
+    
+                const amountCell = document.createElement('td');
+                amountCell.innerHTML = `<span class="pledge-amount">₱${pledge.amount.toFixed(2)}</span>`;
+                row.appendChild(amountCell);
+    
+                const actionsCell = document.createElement('td');
+                actionsCell.className = 'text-end';
+    
+                const btnGroup = document.createElement('div');
+                btnGroup.className = 'btn-group btn-group-blue';
+    
+                const editButton = document.createElement('button');
+                editButton.type = 'button';
+                editButton.className = 'btn btn-sm btn-outline-primary';
+                editButton.innerHTML = '<i class="bi bi-pencil-fill"></i>';
+                editButton.title = 'Edit';
+                editButton.onclick = () => editPledge(pledge.id);
+                btnGroup.appendChild(editButton);
+    
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.className = 'btn btn-sm btn-outline-danger';
+                deleteButton.innerHTML = '<i class="bi bi-trash-fill"></i>';
+                deleteButton.title = 'Delete';
+                deleteButton.onclick = () => deletePledge(pledge.id);
+                btnGroup.appendChild(deleteButton);
+    
+                actionsCell.appendChild(btnGroup);
+                row.appendChild(actionsCell);
+                tableBody.appendChild(row);
+            });
+    
+            checkTableEmpty();
+        }
+    
+        // Function to edit a pledge
+        function editPledge(id) {
+            const pledge = pledgeList.find(p => p.id === id);
+            if (pledge) {
+                document.getElementById('pledgeName').value = pledge.name;
+                document.getElementById('pledgeAmount').value = pledge.amount;
+    
+                pledgeList = pledgeList.filter(p => p.id !== id);
+                updateTable();
+                updateDashboard();
+    
+                document.getElementById('pledgeName').focus();
+    
+                showToast(`Editing pledge for ${pledge.name}`, 'primary');
+            }
+        }
+    
+        // Function to delete a pledge
+        function deletePledge(id) {
+            const pledge = pledgeList.find(p => p.id === id);
+    
+            if (pledge) {
+                const modalElement = document.createElement('div');
+                modalElement.className = 'modal fade';
+                modalElement.id = 'deleteConfirmModal';
+                modalElement.setAttribute('tabindex', '-1');
+                modalElement.setAttribute('aria-labelledby', 'deleteConfirmModalLabel');
+                modalElement.setAttribute('aria-hidden', 'true');
+    
+                modalElement.innerHTML = `
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete the pledge for <strong>${pledge.name}</strong> with amount <strong>₱${pledge.amount.toFixed(2)}</strong>?</p>
+                                <p class="text-danger mb-0"><i class="bi bi-exclamation-triangle me-2"></i>This action cannot be undone.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="confirmDelete">
+                                    <i class="bi bi-trash me-1"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+    
+                document.body.appendChild(modalElement);
+    
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+    
+                document.getElementById('confirmDelete').addEventListener('click', function() {
+                    pledgeList = pledgeList.filter(p => p.id !== id);
+                    updateTable();
+                    updateDashboard();
+                    saveToLocalStorage();
+                    modal.hide();
+                    showToast(`Pledge for ${pledge.name} successfully deleted`, 'danger');
+    
+                    modalElement.addEventListener('hidden.bs.modal', function() {
+                        modalElement.remove();
+                    });
+                });
+    
+                modalElement.addEventListener('hidden.bs.modal', function() {
+                    modalElement.remove();
+                });
+            }
+        }
+    
+
+        function updateDashboard() {
+            const totalPledges = pledgeList.length;
+            const totalAmount = pledgeList.reduce((total, pledge) => total + pledge.amount, 0).toFixed(2);
+    
+            document.getElementById('totalPledges').textContent = totalPledges;
+            document.getElementById('totalAmount').textContent = `₱${totalAmount}`;
+        }
+    
+
+        function saveToLocalStorage() {
+            localStorage.setItem('pledges', JSON.stringify(pledgeList));
+        }
+
+        window.onload = function() {
+            updateTable();
+            updateDashboard();
+        }
+    </script>
+    
+
+</body>
+</html>
