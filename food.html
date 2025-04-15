@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIABAGC Food Pledge System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1565c0;
+            --secondary-blue: #1e88e5;
+            --light-blue: #bbdefb;
+            --ultra-light-blue: #e3f2fd;
+            --dark-blue: #0d47a1;
+            --accent-blue: #2196f3;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 24px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(21, 101, 192, 0.2);
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .dashboard-card {
+            background-color: white;
+            border-left: 5px solid var(--primary-blue);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: var(--ultra-light-blue);
+        }
+
+        .btn-blue-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-blue-primary:hover {
+            background-color: var(--dark-blue);
+            color: white;
+        }
+
+        .card-header-blue {
+            background-color: var(--primary-blue);
+            color: white;
+            border-bottom: none;
+            padding: 15px 20px;
+        }
+
+        .input-group-text {
+            background-color: var(--primary-blue);
+            color: white;
+            border: 1px solid var(--primary-blue);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 0.25rem rgba(21, 101, 192, 0.25);
+        }
+
+        .badge-blue {
+            background-color: var(--light-blue);
+            color: var(--dark-blue);
+        }
+
+        .table-blue {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table-blue thead th {
+            background-color: var(--ultra-light-blue);
+            color: var(--dark-blue);
+            font-weight: 600;
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        .btn-group-blue .btn {
+            border-radius: 6px;
+            margin: 0 3px;
+        }
+
+        .food-amount {
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        #emptyMessage {
+            padding: 30px;
+            color: #6c757d;
+            background-color: var(--ultra-light-blue);
+            border-radius: 8px;
+        }
+
+        .blue-divider {
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-blue), var(--light-blue));
+            margin: 10px 0 20px 0;
+            border-radius: 3px;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            border-bottom-width: 3px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #6c757d;
+        }
+
+        .form-floating label {
+            color: #6c757d;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto; 
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); 
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                width: 90px; 
+            }
+        }
+
+        .header-section {
+            padding: 40px 0;
+        }
+
+        /* New styles for pledge records section */
+        .pledge-records-header {
+            background-color: var(--primary-blue);
+            color: white;
+            border-radius: 8px 8px 0 0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pledge-records-card {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .pledge-table {
+            margin-bottom: 0;
+        }
+
+        .pledge-table th {
+            background-color: var(--ultra-light-blue);
+            color: var(--dark-blue);
+            font-weight: 600;
+            padding: 15px;
+        }
+
+        .pledge-table td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+
+        .action-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .edit-btn {
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+            margin-right: 5px;
+        }
+
+        .edit-btn:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .delete-btn {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .delete-btn:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .refresh-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-icon {
+            color: var(--primary-blue);
+            margin-right: 5px;
+        }
+
+        .amount-value {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .actions-cell {
+            text-align: right;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center text-md-start mb-3 mb-md-0">
+                    <div class="logo-container">
+                        <a href="homepage.html" class="cta-btn">
+                            <img src="images/church-logo.png" alt="Church Logo" class="logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h1 class="text-center fw-bold mb-0">GIABAGC Food Pledge System</h1>
+                    <p class="text-center text-white-50 mb-0">Track and manage congregation's food pledges</p>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-4">
+        <!-- Dashboard Card Section -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="card dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-people-fill dashboard-card-icon"></i>
+                        <h5 class="card-title text-secondary">Total Pledges</h5>
+                        <div class="blue-divider"></div>
+                        <h2 id="totalPledges" class="display-4 fw-bold text-primary">0</h2>
+                        <p class="text-muted">Number of food pledges</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-cash-stack dashboard-card-icon"></i>
+                        <h5 class="card-title text-secondary">Total Food Items</h5>
+                        <div class="blue-divider"></div>
+                        <h2 id="totalItems" class="display-4 fw-bold" style="color: var(--primary-blue);">0</h2>
+                        <p class="text-muted">Total food items pledged</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Food Pledge Form -->
+        <div class="card">
+            <div class="card-header card-header-blue">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Add New Food Pledge</h5>
+                    <span class="badge rounded-pill badge-blue px-3 py-2">New Entry</span>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form id="foodForm" class="row g-3">
+                    <div class="col-md-5">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="foodName" placeholder="Enter name">
+                            <label for="foodName"><i class="bi bi-person me-1"></i>Full Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="foodItem" placeholder="Enter food item">
+                            <label for="foodItem"><i class="bi bi-basket-fill me-1"></i>Food Item</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-stretch">
+                        <button type="submit" class="btn btn-blue-primary w-100">
+                            <i class="bi bi-check-circle me-2"></i>Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- Original Pledge Table -->
+        <div class="card mt-4">
+            <div class="card-header card-header-blue">
+                <h5 class="mb-0"><i class="bi bi-list-check me-2"></i>Food Pledges List</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table id="pledgeTable" class="table table-hover table-blue align-middle">
+                        <thead>
+                            <tr>
+                                <th><i class="bi bi-person-fill me-1"></i>Name</th>
+                                <th><i class="bi bi-basket-fill me-1"></i>Food</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Food pledges will be added here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="emptyMessage" class="text-center">
+                    <i class="bi bi-info-circle me-2" style="font-size: 2rem;"></i>
+                    <h5 class="mt-3">No Pledges Yet</h5>
+                    <p>Add your first pledge using the form above.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container"></div>
+
+    <!-- Bootstrap JS and Custom Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Handle form submission and table display
+        const form = document.getElementById('foodForm');
+        const pledgeTable = document.getElementById('pledgeTable').getElementsByTagName('tbody')[0];
+        const emptyMessage = document.getElementById('emptyMessage');
+        const totalPledges = document.getElementById('totalPledges');
+        const totalItems = document.getElementById('totalItems');
+        let pledges = [];
+        let totalFoodItems = 0;
+
+        // Initialize with sample data for demonstration
+        window.onload = function() {
+            // The sample row is already in the HTML for the new records table
+            if (pledges.length === 0) {
+                emptyMessage.style.display = 'block';
+            } else {
+                emptyMessage.style.display = 'none';
+            }
+        };
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('foodName').value.trim();
+            const foodItem = document.getElementById('foodItem').value.trim();
+
+            if (name && foodItem) {
+                const pledge = { name, foodItem };
+                pledges.push(pledge);
+
+                totalFoodItems += 1;
+
+                // Update pledge table with icon buttons
+                const row = pledgeTable.insertRow();
+                row.innerHTML = `
+                    <td>${name}</td>
+                    <td>${foodItem}</td>
+                    <td class="actions-cell">
+                        <button class="btn action-button edit-btn" onclick="editPledge(this)">
+                            <i class="bi bi-pencil-fill"></i>
+                        </button>
+                        <button class="btn action-button delete-btn" onclick="deletePledge(this)">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </td>
+                `;
+                
+                // Update total counts
+                totalPledges.textContent = pledges.length;
+                totalItems.textContent = totalFoodItems;
+
+                // Hide empty message if there are pledges
+                emptyMessage.style.display = pledges.length ? 'none' : 'block';
+
+                // Clear form fields
+                form.reset();
+
+                // Also update the new records table for demonstration
+                const pledgeRecordsBody = document.getElementById('pledgeRecordsBody');
+                // Clear existing demo row
+                if (pledgeRecordsBody.children.length === 1 && pledgeRecordsBody.children[0].cells[0].textContent.includes('123')) {
+                    pledgeRecordsBody.innerHTML = '';
+                }
+                
+                const newRow = pledgeRecordsBody.insertRow();
+                newRow.innerHTML = `
+                    <td><i class="bi bi-person user-icon"></i>${name}</td>
+                    <td><span class="amount-value">₱100.00</span></td>
+                    <td class="actions-cell">
+                        <button class="btn action-button edit-btn">
+                            <i class="bi bi-pencil-fill"></i>
+                        </button>
+                        <button class="btn action-button delete-btn">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </td>
+                `;
+            }
+        });
+
+        function editPledge(button) {
+            const row = button.closest('tr');
+            const name = row.cells[0].textContent;
+            const foodItem = row.cells[1].textContent;
+
+            document.getElementById('foodName').value = name;
+            document.getElementById('foodItem').value = foodItem;
+            deletePledge(button);
+        }
+
+        function deletePledge(button) {
+            const row = button.closest('tr');
+            row.remove();
+
+            pledges = pledges.filter((pledge) => pledge.name !== row.cells[0].textContent);
+            totalFoodItems -= 1;
+
+            // Update total counts
+            totalPledges.textContent = pledges.length;
+            totalItems.textContent = totalFoodItems;
+
+            // Show empty message if no pledges
+            emptyMessage.style.display = pledges.length ? 'none' : 'block';
+        }
+
+        // Add event listeners to the pledge records table buttons
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.hasAttribute('onclick')) { // Check if it's from the records table
+                    const row = this.closest('tr');
+                    const name = row.cells[0].textContent.replace('123', '').trim();
+                    document.getElementById('foodName').value = name || '123';
+                    document.getElementById('foodItem').value = 'Sample Item';
+                }
+            });
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.hasAttribute('onclick')) { // Check if it's from the records table
+                    this.closest('tr').remove();
+                }
+            });
+        });
+
+        document.querySelector('.refresh-btn').addEventListener('click', function() {
+            // Simulate refresh action
+            const refreshIcon = this.querySelector('i');
+            refreshIcon.classList.add('fa-spin');
+            setTimeout(() => {
+                refreshIcon.classList.remove('fa-spin');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
